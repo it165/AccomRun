@@ -1,302 +1,186 @@
 <!DOCTYPE html>
-
-<html lang="th"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>LWS FIT FOR HEALTH 2026</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Lexend:wght@300;400;600&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<style>
-        body {
-            font-family: 'Lexend', sans-serif;
-            background-color: #f7f9ff;
-            -webkit-tap-highlight-color: transparent;
-        }
+<html lang="th">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>วิ่งแลกค่าน้ำ 2026</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Lexend:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <!-- 🟢 เพิ่ม LINE LIFF SDK -->
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    
+    <style>
+        body { font-family: 'Lexend', sans-serif; background-color: #f7f9ff; -webkit-tap-highlight-color: transparent; }
         .font-plus { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-            display: inline-block;
-            line-height: 1;
-        }
-        .green-gradient-vibrant {
-            background: linear-gradient(135deg, #006c40 0%, #198754 50%, #67fcc6 100%);
-        }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        .custom-shadow {
-            box-shadow: 0px 4px 20px rgba(25, 135, 84, 0.08);
-        }
-        .active-nav-glow {
-            box-shadow: 0 0 15px rgba(103, 252, 198, 0.4);
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; display: inline-block; line-height: 1; }
+        .green-gradient-vibrant { background: linear-gradient(135deg, #006c40 0%, #198754 50%, #67fcc6 100%); }
+        .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .custom-shadow { box-shadow: 0px 4px 20px rgba(25, 135, 84, 0.08); }
+        .active-nav-glow { box-shadow: 0 0 15px rgba(103, 252, 198, 0.4); }
+        
+        /* 🟢 CSS สำหรับปุ่มที่ถูกล็อก */
+        .locked-btn {
+            opacity: 0.4;
+            pointer-events: none;
+            filter: grayscale(100%);
         }
     </style>
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "error-container": "#ffdad6",
-                        "surface-variant": "#e0e3e8",
-                        "surface-dim": "#d7dadf",
-                        "on-surface-variant": "#3e4941",
-                        "surface-container-low": "#f1f4f9",
-                        "error": "#ba1a1a",
-                        "surface-container": "#ebeef3",
-                        "on-primary": "#ffffff",
-                        "secondary-container": "#67fcc6",
-                        "on-secondary-container": "#007354",
-                        "outline-variant": "#bdcabe",
-                        "primary-container": "#198754",
-                        "outline": "#6e7a70",
-                        "tertiary-fixed-dim": "#b1c5ff",
-                        "on-secondary-fixed": "#002116",
-                        "background": "#f7f9ff",
-                        "on-tertiary-fixed": "#001946",
-                        "primary": "#006c40",
-                        "primary-fixed-dim": "#77da9f",
-                        "on-tertiary-fixed-variant": "#00419e",
-                        "on-tertiary": "#ffffff",
-                        "surface-bright": "#f7f9ff",
-                        "on-tertiary-container": "#ffffff",
-                        "surface-container-highest": "#e0e3e8",
-                        "on-primary-fixed-variant": "#00522f",
-                        "on-background": "#181c20",
-                        "secondary-fixed-dim": "#44dfab",
-                        "on-primary-container": "#ffffff",
-                        "tertiary-fixed": "#dae2ff",
-                        "on-surface": "#181c20",
-                        "secondary-fixed": "#67fcc6",
-                        "on-error": "#ffffff",
-                        "surface-container-lowest": "#ffffff",
-                        "primary-fixed": "#93f7ba",
-                        "inverse-on-surface": "#eef1f6",
-                        "tertiary": "#0056cc",
-                        "inverse-primary": "#77da9f",
-                        "surface-container-high": "#e5e8ee",
-                        "tertiary-container": "#0a6dfc",
-                        "on-error-container": "#93000a",
-                        "surface-tint": "#006d41",
-                        "secondary": "#006c4f",
-                        "on-secondary": "#ffffff",
-                        "inverse-surface": "#2d3135",
-                        "surface": "#f7f9ff",
-                        "on-primary-fixed": "#002110",
-                        "on-secondary-fixed-variant": "#00513a"
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
-                        "full": "9999px"
-                    },
-                    "spacing": {
-                        "xs": "4px",
-                        "container-padding-mobile": "20px",
-                        "container-padding-desktop": "40px",
-                        "xl": "32px",
-                        "gutter": "16px",
-                        "lg": "24px",
-                        "base": "4px",
-                        "md": "16px",
-                        "sm": "8px",
-                        "2xl": "48px"
-                    },
-                    "fontFamily": {
-                        "body-lg": ["Lexend"],
-                        "headline-lg-mobile": ["Plus Jakarta Sans"],
-                        "body-md": ["Lexend"],
-                        "label-lg": ["Lexend"],
-                        "display-lg": ["Plus Jakarta Sans"],
-                        "headline-md": ["Plus Jakarta Sans"],
-                        "headline-lg": ["Plus Jakarta Sans"],
-                        "title-lg": ["Lexend"]
-                    },
-                    "fontSize": {
-                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
-                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
-                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
-                        "label-lg": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
-                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
-                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
-                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
-                        "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}]
-                    }
-                },
-            },
-        }
-    </script>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
-  </head>
-<body class="bg-surface text-on-surface selection:bg-secondary-container">
-<!-- TopAppBar -->
-<header class="fixed top-0 w-full z-50 flex justify-between items-center px-container-padding-mobile h-16 bg-primary shadow-md">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-full border-2 border-on-primary overflow-hidden">
-<img class="w-full h-full object-cover" data-alt="A professional studio portrait of a Thai male fitness enthusiast in his 30s, smiling warmly. He is wearing high-performance athletic gear in a bright emerald green color. The lighting is bright and clean with a soft-focus gym background, reflecting the vibrant and disciplined brand personality of LWS FIT 2026." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgMz7MMSM-mgQx2KpEThaNi2W0NodAFDI8h23veIeTLsM4CuxyG5uve9lBF6MwPoa5TfmS_WFALl4tsivF6IVQt69-eryEj2r-bb5pRrHdBC8eBfBKlS4RZnBULHsyydhbNR0qEw5ErAV49emQFiBNX0NFb8DTRcdEqUXCJvGHy9iz7Xtx6fYc7FoRm4rXE-THreWeJB3jlmbMsupOtAMF6aJkXwJABP7cf6cWMqQYIjoJVm203vsjaEO64jdlPzUeDptk2Y1K3IM"/>
-</div>
-<span class="font-headline-md text-headline-md font-bold text-on-primary">LWS FIT 2026</span>
-</div>
-<button class="material-symbols-outlined text-on-primary p-2 hover:bg-primary-container/20 transition-colors duration-200 rounded-full">
-            notifications
-        </button>
-</header>
-<main class="pt-16 pb-24 min-h-screen">
-<!-- Hero Section -->
-<section class="green-gradient-vibrant px-container-padding-mobile py-8 pb-16 rounded-b-[40px] shadow-lg relative overflow-hidden">
-<!-- Decorative Element -->
-<div class="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
-<div class="relative z-10">
-<h1 class="font-plus font-extrabold text-white text-3xl tracking-tight mb-2">LWS FIT FOR HEALTH</h1>
-<div class="flex items-center gap-2 text-white/90">
-<span class="material-symbols-outlined text-sm">waving_hand</span>
-<p class="font-body-lg text-body-lg">สวัสดีคุณ <span class="font-bold underline decoration-secondary-container">Health Warrior</span></p>
-</div>
-</div>
-<!-- Mini Progress Card -->
-<div class="mt-6 glass-card rounded-2xl p-4 flex justify-between items-center custom-shadow">
-<div class="flex flex-col">
-<span class="text-on-surface-variant font-label-lg text-label-lg uppercase">Daily Steps</span>
-<span class="font-headline-md text-headline-md text-primary">8,432 / 10,000</span>
-</div>
-<div class="w-12 h-12 relative flex items-center justify-center">
-<svg class="w-full h-full transform -rotate-90">
-<circle class="text-surface-variant" cx="24" cy="24" fill="transparent" r="20" stroke="currentColor" stroke-width="4"></circle>
-<circle class="text-primary-container" cx="24" cy="24" fill="transparent" r="20" stroke="currentColor" stroke-dasharray="125.6" stroke-dashoffset="25.1" stroke-width="4"></circle>
-</svg>
-<span class="absolute material-symbols-outlined text-primary text-base">directions_run</span>
-</div>
-</div>
-</section>
-<!-- Menu Container (Action Buttons) -->
-<section class="px-container-padding-mobile -mt-8 grid grid-cols-1 gap-gutter">
-<!-- Registration -->
-<a class="group bg-surface-container-lowest p-5 rounded-2xl flex items-center gap-4 border border-transparent hover:border-primary-container/30 custom-shadow transition-all duration-300 active:scale-95" href="#">
-<div class="w-14 h-14 rounded-xl bg-primary-container/10 flex items-center justify-center text-primary group-hover:bg-primary-container group-hover:text-on-primary transition-colors duration-300">
-<span class="material-symbols-outlined text-3xl">how_to_reg</span>
-</div>
-<div class="flex-1">
-<h3 class="font-title-lg text-title-lg text-on-surface mb-0.5">ลงทะเบียนสมาชิก</h3>
-<p class="font-body-md text-body-md text-on-surface-variant/80">กรอกข้อมูลผู้ใช้งานครั้งแรก</p>
-</div>
-<span class="material-symbols-outlined text-outline-variant group-hover:translate-x-1 transition-transform">chevron_right</span>
-</a>
-<!-- Profile & Points -->
-<a class="group bg-surface-container-lowest p-5 rounded-2xl flex items-center gap-4 border border-transparent hover:border-primary-container/30 custom-shadow transition-all duration-300 active:scale-95" href="#">
-<div class="w-14 h-14 rounded-xl bg-secondary-container/20 flex items-center justify-center text-on-secondary-container group-hover:bg-secondary-container transition-colors duration-300">
-<span class="material-symbols-outlined text-3xl">stars</span>
-</div>
-<div class="flex-1">
-<h3 class="font-title-lg text-title-lg text-on-surface mb-0.5">ข้อมูลส่วนตัวและคะแนน</h3>
-<p class="font-body-md text-body-md text-on-surface-variant/80">เช็คพอยท์ ระดับสมาชิก และก้าวสะสม</p>
-</div>
-<span class="material-symbols-outlined text-outline-variant group-hover:translate-x-1 transition-transform">chevron_right</span>
-</a>
-<!-- Upload Steps -->
-<a class="group bg-surface-container-lowest p-5 rounded-2xl flex items-center gap-4 border border-transparent hover:border-primary-container/30 custom-shadow transition-all duration-300 active:scale-95" href="#">
-<div class="w-14 h-14 rounded-xl bg-tertiary-fixed-dim/20 flex items-center justify-center text-tertiary group-hover:bg-tertiary group-hover:text-on-primary transition-colors duration-300">
-<span class="material-symbols-outlined text-3xl">upload_file</span>
-</div>
-<div class="flex-1">
-<h3 class="font-title-lg text-title-lg text-on-surface mb-0.5">ส่งผลก้าวประจำวัน</h3>
-<p class="font-body-md text-body-md text-on-surface-variant/80">ส่งผลให้ AI ตรวจสอบ</p>
-</div>
-<span class="material-symbols-outlined text-outline-variant group-hover:translate-x-1 transition-transform">chevron_right</span>
-</a>
-<!-- Redeem Rewards -->
-<a class="group bg-surface-container-lowest p-5 rounded-2xl flex items-center gap-4 border border-transparent hover:border-primary-container/30 custom-shadow transition-all duration-300 active:scale-95" href="#">
-<div class="w-14 h-14 rounded-xl bg-error-container/20 flex items-center justify-center text-error group-hover:bg-error group-hover:text-on-error transition-colors duration-300">
-<span class="material-symbols-outlined text-3xl">redeem</span>
-</div>
-<div class="flex-1">
-<h3 class="font-title-lg text-title-lg text-on-surface mb-0.5">แลกของรางวัล</h3>
-<p class="font-body-md text-body-md text-on-surface-variant/80">ใช้คะแนนสะสมแลกสิทธิพิเศษและสินค้า</p>
-</div>
-<span class="material-symbols-outlined text-outline-variant group-hover:translate-x-1 transition-transform">chevron_right</span>
-</a>
-<!-- Leaderboard -->
-<a class="group bg-surface-container-lowest p-5 rounded-2xl flex items-center gap-4 border border-transparent hover:border-primary-container/30 custom-shadow transition-all duration-300 active:scale-95" href="#">
-<div class="w-14 h-14 rounded-xl bg-primary-fixed/30 flex items-center justify-center text-primary-container group-hover:bg-primary-container group-hover:text-on-primary transition-colors duration-300">
-<span class="material-symbols-outlined text-3xl">leaderboard</span>
-</div>
-<div class="flex-1">
-<h3 class="font-title-lg text-title-lg text-on-surface mb-0.5">กระดานจัดอันดับ</h3>
-<p class="font-body-md text-body-md text-on-surface-variant/80">Top 20 อันดับสูงสุด</p>
-</div>
-<span class="material-symbols-outlined text-outline-variant group-hover:translate-x-1 transition-transform">chevron_right</span>
-</a>
-</section>
-<!-- Stats Card - Bento Style -->
-<section class="px-container-padding-mobile mt-lg">
-<div class="grid grid-cols-2 gap-md">
-<div class="bg-surface-container-high rounded-2xl p-4 flex flex-col gap-2">
-<span class="material-symbols-outlined text-primary">local_fire_department</span>
-<div>
-<div class="font-headline-md text-headline-md text-on-surface">450</div>
-<div class="font-label-lg text-label-lg text-on-surface-variant">kcal Burnt</div>
-</div>
-</div>
-<div class="bg-surface-container-high rounded-2xl p-4 flex flex-col gap-2">
-<span class="material-symbols-outlined text-tertiary">distance</span>
-<div>
-<div class="font-headline-md text-headline-md text-on-surface">5.2</div>
-<div class="font-label-lg text-label-lg text-on-surface-variant">km Today</div>
-</div>
-</div>
-</div>
-</section>
-</main>
-<!-- BottomNavBar -->
-<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center py-2 px-2 pb-safe bg-surface rounded-t-xl shadow-[0px_-4px_20px_rgba(25,135,84,0.08)] z-50">
-<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 active:scale-95 transition-transform active-nav-glow" href="#">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
-<span class="font-label-lg text-label-lg">Home</span>
-</a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high p-1 rounded-lg active:scale-95 transition-transform" href="#">
-<span class="material-symbols-outlined">directions_run</span>
-<span class="font-label-lg text-label-lg">Steps</span>
-</a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high p-1 rounded-lg active:scale-95 transition-transform" href="#">
-<span class="material-symbols-outlined">redeem</span>
-<span class="font-label-lg text-label-lg">Rewards</span>
-</a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high p-1 rounded-lg active:scale-95 transition-transform" href="#">
-<span class="material-symbols-outlined">leaderboard</span>
-<span class="font-label-lg text-label-lg">Rank</span>
-</a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high p-1 rounded-lg active:scale-95 transition-transform" href="#">
-<span class="material-symbols-outlined">person</span>
-<span class="font-label-lg text-label-lg">Profile</span>
-</a>
-</nav>
-<script>
-        // Micro-interaction for cards
-        document.querySelectorAll('a.group').forEach(card => {
-            card.addEventListener('touchstart', () => {
-                card.style.transform = 'scale(0.98)';
-            });
-            card.addEventListener('touchend', () => {
-                card.style.transform = 'scale(1)';
-            });
-        });
+</head>
+<body class="bg-slate-50 text-slate-800 selection:bg-emerald-300">
 
-        // Simple scroll effect for TopAppBar
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('header');
-            if (window.scrollY > 20) {
-                header.classList.add('bg-primary/95', 'backdrop-blur-md');
-            } else {
-                header.classList.remove('bg-primary/95', 'backdrop-blur-md');
-            }
+<!-- Header / Hero Section -->
+<section class="green-gradient-vibrant px-5 py-8 pb-16 rounded-b-[40px] shadow-lg relative overflow-hidden pt-12">
+    <div class="relative z-10">
+        <h1 class="font-plus font-extrabold text-white text-3xl tracking-tight mb-2">LWS FIT FOR HEALTH</h1>
+        <div class="flex items-center gap-2 text-white/90">
+            <span class="material-symbols-outlined text-sm">waving_hand</span>
+            <!-- 🟢 จุดแสดงชื่อเมื่อดึงข้อมูล LINE สำเร็จ -->
+            <p class="font-body-lg text-body-lg" id="welcomeText">กำลังเชื่อมต่อ LINE...</p>
+        </div>
+    </div>
+</section>
+
+<!-- Menu Container (ซ่อน/ล็อกไว้ก่อน จนกว่าจะเช็ค DB เสร็จ) -->
+<section id="menuContainer" class="px-5 -mt-8 grid grid-cols-1 gap-4" style="pointer-events: none; opacity: 0.5; transition: 0.3s;">
+    
+    <!-- ปุ่มที่ 1: ลงทะเบียน -->
+    <a id="btn-register" class="group bg-white p-5 rounded-2xl flex items-center gap-4 custom-shadow" href="javascript:void(0);" onclick="goToPage('register')">
+        <div class="w-14 h-14 rounded-xl bg-green-100 flex items-center justify-center text-green-700">
+            <span class="material-symbols-outlined text-3xl">how_to_reg</span>
+        </div>
+        <div class="flex-1">
+            <h3 id="txt-register" class="font-semibold text-lg text-slate-800 mb-0.5">📝 ลงทะเบียนสมาชิก</h3>
+            <p class="text-sm text-slate-500">กรอกข้อมูลผู้ใช้งานครั้งแรก</p>
+        </div>
+    </a>
+
+    <!-- ปุ่มที่ 2: โปรไฟล์ -->
+    <a id="btn-profile" class="locked-btn group bg-white p-5 rounded-2xl flex items-center gap-4 custom-shadow" href="javascript:void(0);" onclick="goToPage('profile')">
+        <div class="w-14 h-14 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-700">
+            <span class="material-symbols-outlined text-3xl">stars</span>
+        </div>
+        <div class="flex-1">
+            <h3 class="font-semibold text-lg text-slate-800 mb-0.5">ข้อมูลส่วนตัวและคะแนน</h3>
+        </div>
+    </a>
+
+    <!-- ปุ่มที่ 3: อัปโหลด -->
+    <a id="btn-upload" class="locked-btn group bg-white p-5 rounded-2xl flex items-center gap-4 custom-shadow" href="javascript:void(0);" onclick="goToPage('upload')">
+        <div class="w-14 h-14 rounded-xl bg-blue-100 flex items-center justify-center text-blue-700">
+            <span class="material-symbols-outlined text-3xl">upload_file</span>
+        </div>
+        <div class="flex-1">
+            <h3 class="font-semibold text-lg text-slate-800 mb-0.5">ส่งผลก้าวประจำวัน</h3>
+        </div>
+    </a>
+
+    <!-- ปุ่มที่ 4: แลกรางวัล -->
+    <a id="btn-redeem" class="locked-btn group bg-white p-5 rounded-2xl flex items-center gap-4 custom-shadow" href="javascript:void(0);" onclick="goToPage('redeem')">
+        <div class="w-14 h-14 rounded-xl bg-red-100 flex items-center justify-center text-red-700">
+            <span class="material-symbols-outlined text-3xl">redeem</span>
+        </div>
+        <div class="flex-1">
+            <h3 class="font-semibold text-lg text-slate-800 mb-0.5">แลกของรางวัล</h3>
+        </div>
+    </a>
+
+    <!-- ปุ่มที่ 5: จัดอันดับ -->
+    <a id="btn-leaderboard" class="locked-btn group bg-white p-5 rounded-2xl flex items-center gap-4 custom-shadow" href="javascript:void(0);" onclick="goToPage('leaderboard')">
+        <div class="w-14 h-14 rounded-xl bg-purple-100 flex items-center justify-center text-purple-700">
+            <span class="material-symbols-outlined text-3xl">leaderboard</span>
+        </div>
+        <div class="flex-1">
+            <h3 class="font-semibold text-lg text-slate-800 mb-0.5">กระดานจัดอันดับ</h3>
+        </div>
+    </a>
+</section>
+
+<!-- 🟢 Script สำหรับจัดการระบบ -->
+<script>
+  let currentUid = ''; 
+  
+  // 🚨 นำลิงก์ Apps Script (ที่ลงท้ายด้วย /exec) มาวางตรงนี้
+  const GAS_URL = "https://script.google.com/macros/s/AKfycbw0jdlT9JewPZLbAOtKvdpE3bxFkMM6qXFRWoWZH5RmDgxt3w_A9nUrV1uJ_cNJFFW6qA/exec"; 
+
+  document.addEventListener("DOMContentLoaded", function() {
+    const myLiffId = "2010703651-c2qp2DaT"; 
+    const statusText = document.getElementById('welcomeText');
+    const menu = document.getElementById('menuContainer');
+
+    const btnRegister = document.getElementById('btn-register');
+    const txtRegister = document.getElementById('txt-register');
+    const btnProfile = document.getElementById('btn-profile');
+    const btnUpload = document.getElementById('btn-upload');
+    const btnRedeem = document.getElementById('btn-redeem');
+    const btnLeaderboard = document.getElementById('btn-leaderboard');
+
+    liff.init({ liffId: myLiffId }).then(() => {
+      if (!liff.isLoggedIn()) {
+        liff.login();
+        return;
+      }
+
+      liff.getProfile().then(profile => {
+        currentUid = profile.userId; 
+        statusText.innerText = "กำลังตรวจสอบสิทธิ์...";
+        
+        // ยิงคำสั่งไปเช็คที่ Google Sheets
+        fetch(GAS_URL, {
+          method: 'POST',
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({ action: "getProfile", userId: currentUid })
+        })
+        .then(res => res.json())
+        .then(result => {
+          statusText.innerText = "สวัสดีคุณ " + profile.displayName;
+          
+          // ปลดล็อกเมนูหลักให้แสดงผลชัดเจน
+          menu.style.pointerEvents = "auto";
+          menu.style.opacity = "1";
+
+          if (result.status === "success") {
+            // ✅ เคยสมัครแล้ว
+            btnRegister.classList.add('locked-btn');
+            txtRegister.innerText = "✅ ลงทะเบียนแล้ว";
+            
+            btnProfile.classList.remove('locked-btn');
+            btnUpload.classList.remove('locked-btn');
+            btnRedeem.classList.remove('locked-btn');
+            btnLeaderboard.classList.remove('locked-btn');
+          } else {
+            // ❌ ยังไม่เคยสมัคร
+            btnRegister.classList.remove('locked-btn');
+            txtRegister.innerText = "📝 ลงทะเบียนสมาชิก";
+            
+            btnProfile.classList.add('locked-btn');
+            btnUpload.classList.add('locked-btn');
+            btnRedeem.classList.add('locked-btn');
+            btnLeaderboard.classList.add('locked-btn');
+          }
+        })
+        .catch(err => {
+          statusText.innerText = "เชื่อมต่อฐานข้อมูลไม่สำเร็จ";
         });
-    </script>
-</body></html>
+        
+      }).catch(err => {
+        statusText.innerText = "ดึงข้อมูลโปรไฟล์ไม่สำเร็จ";
+      });
+    }).catch(err => {
+      statusText.innerText = "LIFF Error: " + err.message;
+    });
+  });
+
+  // ฟังก์ชันสลับหน้าเว็บ
+  function goToPage(pageName) {
+    if (!currentUid) {
+      alert("กำลังรอเชื่อมต่อข้อมูล LINE กรุณารอสักครู่ครับ");
+      return;
+    }
+    // ตัวอย่างการลิงก์ไปหน้าอื่น พร้อมส่งค่า UID ไปด้วย
+    window.location.href = pageName + ".html?uid=" + currentUid;
+  }
+</script>
+
+</body>
+</html>
