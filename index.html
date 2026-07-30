@@ -2,184 +2,235 @@
 <html lang="th">
 <head>
     <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>วิ่งแลกค่าน้ำ 2026</title>
+    <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
+    <title>Accom RUN 2026</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Lexend:wght@300;400;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-    <!-- 🟢 เพิ่ม LINE LIFF SDK -->
-    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     
+    <!-- นำเข้า LINE LIFF SDK -->
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
     <style>
-        body { font-family: 'Lexend', sans-serif; background-color: #f7f9ff; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Lexend', sans-serif; background-color: #f7f9ff; -webkit-tap-highlight-color: transparent; padding-bottom: env(safe-area-inset-bottom); }
         .font-plus { font-family: 'Plus Jakarta Sans', sans-serif; }
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; display: inline-block; line-height: 1; }
-        .green-gradient-vibrant { background: linear-gradient(135deg, #006c40 0%, #198754 50%, #67fcc6 100%); }
+        
+        /* ดีไซน์ส่วนหัว */
+        .mini-app-hero { padding-top: calc(env(safe-area-inset-top) + 20px); background: linear-gradient(135deg, #006c40 0%, #198754 50%, #67fcc6 100%); }
         .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.2); }
         .custom-shadow { box-shadow: 0px 4px 20px rgba(25, 135, 84, 0.08); }
-        .active-nav-glow { box-shadow: 0 0 15px rgba(103, 252, 198, 0.4); }
         
-        /* 🟢 CSS สำหรับปุ่มที่ถูกล็อก */
-        .locked-btn {
-            opacity: 0.4;
-            pointer-events: none;
-            filter: grayscale(100%);
-        }
+        /* 🟢 เอฟเฟกต์สำหรับปุ่มที่ถูกล็อก (จะดูจางๆ และกดไม่ได้) */
+        .locked-btn { opacity: 0.5; pointer-events: none; filter: grayscale(100%); transition: 0.3s; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 selection:bg-emerald-300">
+<body class="text-slate-800 selection:bg-emerald-300">
 
-<!-- Header / Hero Section -->
-<section class="green-gradient-vibrant px-5 py-8 pb-16 rounded-b-[40px] shadow-lg relative overflow-hidden pt-12">
-    <div class="relative z-10">
-        <h1 class="font-plus font-extrabold text-white text-3xl tracking-tight mb-2">LWS FIT FOR HEALTH</h1>
-        <div class="flex items-center gap-2 text-white/90">
-            <span class="material-symbols-outlined text-sm">waving_hand</span>
-            <!-- 🟢 จุดแสดงชื่อเมื่อดึงข้อมูล LINE สำเร็จ -->
-            <p class="font-body-lg text-body-lg" id="welcomeText">กำลังเชื่อมต่อ LINE...</p>
-        </div>
-    </div>
-</section>
-
-<!-- Menu Container (ซ่อน/ล็อกไว้ก่อน จนกว่าจะเช็ค DB เสร็จ) -->
-<section id="menuContainer" class="px-5 -mt-8 grid grid-cols-1 gap-4" style="pointer-events: none; opacity: 0.5; transition: 0.3s;">
-    
-    <!-- ปุ่มที่ 1: ลงทะเบียน -->
-    <a id="btn-register" class="group bg-white p-5 rounded-2xl flex items-center gap-4 custom-shadow" href="javascript:void(0);" onclick="goToPage('register')">
-        <div class="w-14 h-14 rounded-xl bg-green-100 flex items-center justify-center text-green-700">
-            <span class="material-symbols-outlined text-3xl">how_to_reg</span>
-        </div>
-        <div class="flex-1">
-            <h3 id="txt-register" class="font-semibold text-lg text-slate-800 mb-0.5">📝 ลงทะเบียนสมาชิก</h3>
-            <p class="text-sm text-slate-500">กรอกข้อมูลผู้ใช้งานครั้งแรก</p>
-        </div>
-    </a>
-
-    <!-- ปุ่มที่ 2: โปรไฟล์ -->
-    <a id="btn-profile" class="locked-btn group bg-white p-5 rounded-2xl flex items-center gap-4 custom-shadow" href="javascript:void(0);" onclick="goToPage('profile')">
-        <div class="w-14 h-14 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-700">
-            <span class="material-symbols-outlined text-3xl">stars</span>
-        </div>
-        <div class="flex-1">
-            <h3 class="font-semibold text-lg text-slate-800 mb-0.5">ข้อมูลส่วนตัวและคะแนน</h3>
-        </div>
-    </a>
-
-    <!-- ปุ่มที่ 3: อัปโหลด -->
-    <a id="btn-upload" class="locked-btn group bg-white p-5 rounded-2xl flex items-center gap-4 custom-shadow" href="javascript:void(0);" onclick="goToPage('upload')">
-        <div class="w-14 h-14 rounded-xl bg-blue-100 flex items-center justify-center text-blue-700">
-            <span class="material-symbols-outlined text-3xl">upload_file</span>
-        </div>
-        <div class="flex-1">
-            <h3 class="font-semibold text-lg text-slate-800 mb-0.5">ส่งผลก้าวประจำวัน</h3>
-        </div>
-    </a>
-
-    <!-- ปุ่มที่ 4: แลกรางวัล -->
-    <a id="btn-redeem" class="locked-btn group bg-white p-5 rounded-2xl flex items-center gap-4 custom-shadow" href="javascript:void(0);" onclick="goToPage('redeem')">
-        <div class="w-14 h-14 rounded-xl bg-red-100 flex items-center justify-center text-red-700">
-            <span class="material-symbols-outlined text-3xl">redeem</span>
-        </div>
-        <div class="flex-1">
-            <h3 class="font-semibold text-lg text-slate-800 mb-0.5">แลกของรางวัล</h3>
-        </div>
-    </a>
-
-    <!-- ปุ่มที่ 5: จัดอันดับ -->
-    <a id="btn-leaderboard" class="locked-btn group bg-white p-5 rounded-2xl flex items-center gap-4 custom-shadow" href="javascript:void(0);" onclick="goToPage('leaderboard')">
-        <div class="w-14 h-14 rounded-xl bg-purple-100 flex items-center justify-center text-purple-700">
-            <span class="material-symbols-outlined text-3xl">leaderboard</span>
-        </div>
-        <div class="flex-1">
-            <h3 class="font-semibold text-lg text-slate-800 mb-0.5">กระดานจัดอันดับ</h3>
-        </div>
-    </a>
-</section>
-
-<!-- 🟢 Script สำหรับจัดการระบบ -->
-<script>
-  let currentUid = ''; 
-  
-  // 🚨 นำลิงก์ Apps Script (ที่ลงท้ายด้วย /exec) มาวางตรงนี้
-  const GAS_URL = "https://script.google.com/macros/s/AKfycbw0jdlT9JewPZLbAOtKvdpE3bxFkMM6qXFRWoWZH5RmDgxt3w_A9nUrV1uJ_cNJFFW6qA/exec"; 
-
-  document.addEventListener("DOMContentLoaded", function() {
-    const myLiffId = "2010703651-c2qp2DaT"; 
-    const statusText = document.getElementById('welcomeText');
-    const menu = document.getElementById('menuContainer');
-
-    const btnRegister = document.getElementById('btn-register');
-    const txtRegister = document.getElementById('txt-register');
-    const btnProfile = document.getElementById('btn-profile');
-    const btnUpload = document.getElementById('btn-upload');
-    const btnRedeem = document.getElementById('btn-redeem');
-    const btnLeaderboard = document.getElementById('btn-leaderboard');
-
-    liff.init({ liffId: myLiffId }).then(() => {
-      if (!liff.isLoggedIn()) {
-        liff.login();
-        return;
-      }
-
-      liff.getProfile().then(profile => {
-        currentUid = profile.userId; 
-        statusText.innerText = "กำลังตรวจสอบสิทธิ์...";
+<main class="min-h-screen pb-10">
+    <!-- Hero Section -->
+    <section class="mini-app-hero px-5 pb-12 rounded-b-[40px] shadow-lg relative overflow-hidden">
         
-        // ยิงคำสั่งไปเช็คที่ Google Sheets
+        <!-- ข้อมูลโปรไฟล์ -->
+        <div class="relative z-10 flex items-center justify-between mb-4">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-full border-2 border-white overflow-hidden bg-white/20 shrink-0">
+                    <img id="profileImage" class="w-full h-full object-cover" src="https://placehold.co/150x150/006c40/FFFFFF?text=..." alt="Profile">
+                </div>
+                <div>
+                    <h1 class="font-plus font-bold text-white text-lg leading-tight">Accom RUN 2026</h1>
+                    <p class="text-white/90 text-sm">คุณ <span id="displayName" class="font-bold">กำลังเชื่อมต่อ...</span></p>
+                </div>
+            </div>
+            <button class="material-symbols-outlined text-white p-2 bg-white/10 hover:bg-white/20 transition-colors rounded-full shrink-0">
+                notifications
+            </button>
+        </div>
+
+        <!-- สถานะ UID -->
+        <div class="relative z-10 mb-2">
+            <span id="userIdDisplay" class="text-xs text-white/90 bg-black/20 px-2 py-1 rounded">กำลังเตรียมระบบ...</span>
+        </div>
+
+        <!-- Progress Card -->
+        <div class="mt-4 glass-card rounded-2xl p-4 flex justify-between items-center custom-shadow">
+            <div class="flex flex-col">
+                <span class="text-slate-600 text-xs font-semibold uppercase">Total Distance</span>
+                <div class="flex flex-col">
+                    <!-- 🟢 เพิ่ม ID: totalKmDisplay และ totalStepsDisplay -->
+                    <span id="totalKmDisplay" class="font-plus text-2xl font-bold text-[#006c40]">0.0 Km</span>
+                    <span id="totalStepsDisplay" class="text-slate-500 text-sm">0 Steps</span>
+                </div>
+            </div>
+            <div class="w-12 h-12 relative flex items-center justify-center shrink-0">
+                <svg class="w-full h-full transform -rotate-90">
+                    <circle class="text-slate-200" cx="24" cy="24" fill="transparent" r="20" stroke="currentColor" stroke-width="4"></circle>
+                    <circle class="text-[#198754]" cx="24" cy="24" fill="transparent" r="20" stroke="currentColor" stroke-dasharray="125.6" stroke-dashoffset="125.6" stroke-width="4"></circle>
+                </svg>
+                <span class="absolute material-symbols-outlined text-[#006c40] text-base">directions_run</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Container -->
+    <section class="px-5 -mt-4 grid grid-cols-1 gap-4 relative z-20">
+        
+        <!-- 1. ปุ่มลงทะเบียน -->
+        <a id="btn-register" class="group bg-white p-5 rounded-2xl flex items-center gap-4 custom-shadow active:scale-95 transition-transform" href="register.html">
+            <div class="w-14 h-14 rounded-xl bg-green-100 flex items-center justify-center text-green-700 shrink-0">
+                <span class="material-symbols-outlined text-3xl">how_to_reg</span>
+            </div>
+            <div class="flex-1">
+                <h3 id="txt-register" class="font-semibold text-lg text-slate-800 mb-0.5">ลงทะเบียนสมาชิก</h3>
+                <p class="text-sm text-slate-500 line-clamp-1">กรอกข้อมูลผู้ใช้งานครั้งแรก</p>
+            </div>
+            <span class="material-symbols-outlined text-slate-400">chevron_right</span>
+        </a>
+
+        <!-- 2. ข้อมูลส่วนตัว -->
+        <a id="btn-profile" class="locked-btn group bg-white p-5 rounded-2xl flex items-center gap-4 custom-shadow active:scale-95 transition-transform" href="profile.html">
+            <div class="w-14 h-14 rounded-xl bg-teal-100 flex items-center justify-center text-teal-700 shrink-0">
+                <span class="material-symbols-outlined text-3xl">stars</span>
+            </div>
+            <div class="flex-1">
+                <h3 class="font-semibold text-lg text-slate-800 mb-0.5">ข้อมูลส่วนตัวและคะแนน</h3>
+            </div>
+            <span class="material-symbols-outlined text-slate-400">chevron_right</span>
+        </a>
+
+        <!-- 3. ส่งผลก้าว -->
+        <a id="btn-upload" class="locked-btn group bg-white p-5 rounded-2xl flex items-center gap-4 custom-shadow active:scale-95 transition-transform" href="upload.html">
+            <div class="w-14 h-14 rounded-xl bg-blue-100 flex items-center justify-center text-blue-700 shrink-0">
+                <span class="material-symbols-outlined text-3xl">upload_file</span>
+            </div>
+            <div class="flex-1">
+                <h3 class="font-semibold text-lg text-slate-800 mb-0.5">ส่งผลก้าวประจำวัน</h3>
+                <p class="text-sm text-slate-500 line-clamp-1">ส่งผลให้ AI ตรวจสอบ</p>
+            </div>
+            <span class="material-symbols-outlined text-slate-400">chevron_right</span>
+        </a>
+
+        <!-- 4. แลกรางวัล -->
+        <a id="btn-redeem" class="locked-btn group bg-white p-5 rounded-2xl flex items-center gap-4 custom-shadow active:scale-95 transition-transform" href="#">
+            <div class="w-14 h-14 rounded-xl bg-red-100 flex items-center justify-center text-red-700 shrink-0">
+                <span class="material-symbols-outlined text-3xl">redeem</span>
+            </div>
+            <div class="flex-1">
+                <h3 class="font-semibold text-lg text-slate-800 mb-0.5">แลกของรางวัล</h3>
+            </div>
+            <span class="material-symbols-outlined text-slate-400">chevron_right</span>
+        </a>
+
+        <!-- 5. จัดอันดับ -->
+        <a id="btn-leaderboard" class="locked-btn group bg-white p-5 rounded-2xl flex items-center gap-4 custom-shadow active:scale-95 transition-transform" href="#">
+            <div class="w-14 h-14 rounded-xl bg-purple-100 flex items-center justify-center text-purple-700 shrink-0">
+                <span class="material-symbols-outlined text-3xl">leaderboard</span>
+            </div>
+            <div class="flex-1">
+                <h3 class="font-semibold text-lg text-slate-800 mb-0.5">กระดานจัดอันดับ</h3>
+            </div>
+            <span class="material-symbols-outlined text-slate-400">chevron_right</span>
+        </a>
+
+    </section>
+</main>
+
+<script>
+    const LIFF_ID = "2010897779-NA8xZzta"; 
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbyeKxJiRsDWXnI8onqW1IqT5LMQMQ6JdLqSAwA2BiI68QC5eq1-xODhdAn64xjbrkXeww/exec"; 
+
+    document.addEventListener("DOMContentLoaded", function() {
+        liff.init({ liffId: LIFF_ID })
+            .then(() => {
+                if (!liff.isLoggedIn()) {
+                    liff.login();
+                } else {
+                    getLiffProfile();
+                }
+            })
+            .catch((err) => {
+                document.getElementById('userIdDisplay').innerText = "LIFF Init Failed";
+            });
+    });
+
+    function getLiffProfile() {
+        liff.getProfile()
+            .then((profile) => {
+                document.getElementById('profileImage').src = profile.pictureUrl || "https://placehold.co/150x150/006c40/FFFFFF?text=User";
+                document.getElementById('displayName').innerText = profile.displayName;
+                document.getElementById('userIdDisplay').innerText = "กำลังตรวจสอบกับฐานข้อมูล...";
+
+                // 1. เช็คสถานะลงทะเบียน (ของเดิม)
+                checkDatabase(profile.userId);
+
+                // 🟢 2. ดึงสถิติ Km รวม (เพิ่มใหม่)
+                fetchUserStats(profile.userId);
+            })
+            .catch((err) => {
+                document.getElementById('userIdDisplay').innerText = "ดึง Profile ล้มเหลว";
+            });
+    }
+
+    // 🟢 ฟังก์ชันใหม่: ดึงสถิติก้าวและ Km รวมจาก Sheets
+    function fetchUserStats(uid) {
+        // ใส่สถานะกำลังโหลด
+        document.getElementById('totalKmDisplay').innerHTML = '<span class="material-symbols-outlined animate-spin text-lg">sync</span>';
+        document.getElementById('totalStepsDisplay').innerText = "Loading...";
+
         fetch(GAS_URL, {
-          method: 'POST',
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify({ action: "getProfile", userId: currentUid })
+            method: 'POST',
+            body: JSON.stringify({ action: 'getUserStats', userId: uid })
         })
         .then(res => res.json())
-        .then(result => {
-          statusText.innerText = "สวัสดีคุณ " + profile.displayName;
-          
-          // ปลดล็อกเมนูหลักให้แสดงผลชัดเจน
-          menu.style.pointerEvents = "auto";
-          menu.style.opacity = "1";
-
-          if (result.status === "success") {
-            // ✅ เคยสมัครแล้ว
-            btnRegister.classList.add('locked-btn');
-            txtRegister.innerText = "✅ ลงทะเบียนแล้ว";
-            
-            btnProfile.classList.remove('locked-btn');
-            btnUpload.classList.remove('locked-btn');
-            btnRedeem.classList.remove('locked-btn');
-            btnLeaderboard.classList.remove('locked-btn');
-          } else {
-            // ❌ ยังไม่เคยสมัคร
-            btnRegister.classList.remove('locked-btn');
-            txtRegister.innerText = "📝 ลงทะเบียนสมาชิก";
-            
-            btnProfile.classList.add('locked-btn');
-            btnUpload.classList.add('locked-btn');
-            btnRedeem.classList.add('locked-btn');
-            btnLeaderboard.classList.add('locked-btn');
-          }
+        .then(data => {
+            if (data.success) {
+                // แสดงผล Km (ปัดเศษทศนิยมตามที่ส่งมาจาก GAS)
+                document.getElementById('totalKmDisplay').innerText = data.totalKm + " Km";
+                // แสดงผลก้าว (ใส่คอมม่าคั่นหลักพัน)
+                document.getElementById('totalStepsDisplay').innerText = Number(data.totalSteps).toLocaleString() + " Steps";
+            } else {
+                console.error("GAS error:", data.error);
+                document.getElementById('totalKmDisplay').innerText = "0.0 Km";
+                document.getElementById('totalStepsDisplay').innerText = "0 Steps";
+            }
         })
         .catch(err => {
-          statusText.innerText = "เชื่อมต่อฐานข้อมูลไม่สำเร็จ";
+            console.error("Fetch stats error:", err);
+            document.getElementById('totalKmDisplay').innerText = "Error";
+            document.getElementById('totalStepsDisplay').innerText = "Conn. Failed";
         });
-        
-      }).catch(err => {
-        statusText.innerText = "ดึงข้อมูลโปรไฟล์ไม่สำเร็จ";
-      });
-    }).catch(err => {
-      statusText.innerText = "LIFF Error: " + err.message;
-    });
-  });
-
-  // ฟังก์ชันสลับหน้าเว็บ
-  function goToPage(pageName) {
-    if (!currentUid) {
-      alert("กำลังรอเชื่อมต่อข้อมูล LINE กรุณารอสักครู่ครับ");
-      return;
     }
-    // ตัวอย่างการลิงก์ไปหน้าอื่น พร้อมส่งค่า UID ไปด้วย
-    window.location.href = pageName + ".html?uid=" + currentUid;
-  }
+
+    function checkDatabase(uid) {
+        fetch(GAS_URL, {
+            method: 'POST',
+            body: JSON.stringify({ action: 'checkUser', userId: uid })
+        })
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('userIdDisplay').innerText = "UID: " + uid;
+
+            if (data.registered === true) {
+                document.getElementById('txt-register').innerText = "✅ ข้อมูลสมบูรณ์แล้ว";
+                document.getElementById('btn-register').classList.add('locked-btn'); 
+                document.getElementById('btn-profile').classList.remove('locked-btn'); 
+                document.getElementById('btn-upload').classList.remove('locked-btn'); 
+                document.getElementById('btn-redeem').classList.remove('locked-btn'); 
+                document.getElementById('btn-leaderboard').classList.remove('locked-btn'); 
+            } else {
+                document.getElementById('txt-register').innerText = "ลงทะเบียนสมาชิก";
+                document.getElementById('btn-register').classList.remove('locked-btn'); 
+                document.getElementById('btn-profile').classList.add('locked-btn'); 
+                document.getElementById('btn-upload').classList.add('locked-btn'); 
+                document.getElementById('btn-redeem').classList.add('locked-btn'); 
+                document.getElementById('btn-leaderboard').classList.add('locked-btn'); 
+            }
+        })
+        .catch(err => {
+            document.getElementById('userIdDisplay').innerText = "เชื่อมต่อฐานข้อมูลล้มเหลว (เช็ค GAS_URL)";
+            console.error(err);
+        });
+    }
 </script>
 
 </body>

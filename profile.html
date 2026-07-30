@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
+    <title>Accom RUN 2026 - ข้อมูลส่วนตัวและคะแนน</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Lexend:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+    <style>
+        body { font-family: 'Lexend', sans-serif; background-color: #f7f9ff; -webkit-tap-highlight-color: transparent; padding-bottom: env(safe-area-inset-bottom); }
+        .font-plus { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; display: inline-block; line-height: 1; }
+        .custom-shadow { box-shadow: 0px 4px 20px rgba(0, 108, 64, 0.08); }
+        .primary-gradient { background: linear-gradient(135deg, #006c40 0%, #198754 100%); }
+        .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.4); }
+    </style>
+</head>
+<body class="text-slate-800">
+
+<!-- Header -->
+<header class="fixed top-0 w-full z-40 bg-[#006c40] shadow-md flex justify-between items-center px-5 h-16" style="padding-top: env(safe-area-inset-top); height: calc(4rem + env(safe-area-inset-top));">
+    <div class="flex items-center gap-2">
+        <a href="index.html" class="material-symbols-outlined text-white p-2">arrow_back</a>
+        <h1 class="font-plus font-bold text-white text-lg tracking-tight">ข้อมูลส่วนตัวและคะแนน</h1>
+    </div>
+</header>
+
+<main class="pt-24 px-5 pb-24 max-w-lg mx-auto">
+
+    <!-- 🟢 1. การ์ดแสดงผล Km. และ Points -->
+    <div class="primary-gradient rounded-3xl p-6 mb-6 text-white shadow-xl relative overflow-hidden">
+        <span class="material-symbols-outlined absolute -right-4 -bottom-4 text-[120px] opacity-10">stars</span>
+        
+        <div class="flex items-center gap-4 mb-5 relative z-10">
+            <div class="w-16 h-16 rounded-full border-2 border-white/50 overflow-hidden bg-white/20 shrink-0 shadow-inner">
+                <img id="profileImage" class="w-full h-full object-cover" src="https://placehold.co/150x150/006c40/FFFFFF?text=User">
+            </div>
+            <div>
+                <h2 id="displayName" class="font-plus font-bold text-xl leading-tight">กำลังโหลด...</h2>
+                <p id="displayDorm" class="text-white/80 text-sm mt-0.5"><span class="material-symbols-outlined text-[14px] align-middle">apartment</span> หอพัก: -</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 relative z-10 border-t border-white/20 pt-4">
+            <div>
+                <p class="text-xs opacity-80 uppercase tracking-wider mb-1">ระยะทางรวม</p>
+                <div class="flex items-baseline gap-1">
+                    <p id="totalKm" class="font-plus text-3xl font-bold text-white">0.00</p>
+                    <span class="text-sm opacity-80 font-medium">Km.</span>
+                </div>
+            </div>
+            <div class="text-right">
+                <p class="text-xs opacity-80 uppercase tracking-wider mb-1 text-[#a3fbd0]">คะแนนสะสม</p>
+                <div class="flex items-baseline gap-1 justify-end">
+                    <p id="totalPoints" class="font-plus text-3xl font-bold text-[#a3fbd0]">0</p>
+                    <span class="text-sm text-[#a3fbd0] opacity-80 font-medium">Points</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🟢 2. ฟอร์มแก้ไขข้อมูลส่วนตัว -->
+    <div class="mb-4 flex items-center justify-between">
+        <h3 class="font-plus font-bold text-lg text-[#006c40]">ข้อมูลส่วนตัว</h3>
+        <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-md font-semibold">แก้ไขได้</span>
+    </div>
+
+    <div class="bg-white p-5 rounded-2xl custom-shadow space-y-4">
+        <!-- ชื่อ-สกุล -->
+        <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">ชื่อ-สกุล</label>
+            <input type="text" id="full_name" class="w-full rounded-xl border-slate-300 bg-slate-50 focus:border-[#006c40] focus:ring focus:ring-[#006c40]/20" placeholder="ชื่อ สกุล">
+        </div>
+
+        <!-- เบอร์โทรศัพท์ -->
+        <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">เบอร์โทรศัพท์</label>
+            <input type="tel" id="phone" class="w-full rounded-xl border-slate-300 bg-slate-50 focus:border-[#006c40] focus:ring focus:ring-[#006c40]/20" placeholder="08xxxxxxxx" maxlength="10">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+            <!-- หอพัก (ดึงจาก Dropdown) -->
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">หอพัก / สังกัด</label>
+                <select id="org" class="w-full rounded-xl border-slate-300 bg-slate-50 focus:border-[#006c40] focus:ring focus:ring-[#006c40]/20">
+                    <option value="">เลือกหอพัก</option>
+                </select>
+            </div>
+            <!-- หมายเลขห้อง -->
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1">หมายเลขห้อง</label>
+                <input type="text" id="room_number" class="w-full rounded-xl border-slate-300 bg-slate-50 focus:border-[#006c40] focus:ring focus:ring-[#006c40]/20" placeholder="เช่น 101">
+            </div>
+        </div>
+
+        <!-- อาชีพ (ดึงจาก Dropdown) -->
+        <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">อาชีพ</label>
+            <select id="job" class="w-full rounded-xl border-slate-300 bg-slate-50 focus:border-[#006c40] focus:ring focus:ring-[#006c40]/20">
+                <option value="">เลือกอาชีพ</option>
+            </select>
+        </div>
+
+        <!-- วันเกิด -->
+        <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">วัน/เดือน/ปีเกิด</label>
+            <input type="date" id="birthdate" class="w-full rounded-xl border-slate-300 bg-slate-50 focus:border-[#006c40] focus:ring focus:ring-[#006c40]/20">
+        </div>
+
+        <!-- โรคประจำตัว -->
+        <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">โรคประจำตัว (ถ้าไม่มี ขีด -)</label>
+            <input type="text" id="disease" class="w-full rounded-xl border-slate-300 bg-slate-50 focus:border-[#006c40] focus:ring focus:ring-[#006c40]/20" placeholder="-">
+        </div>
+
+        <button id="btnSave" onclick="saveProfile()" class="w-full h-12 mt-4 primary-gradient text-white font-plus font-bold text-lg rounded-xl shadow-lg active:scale-95 transition-all flex items-center justify-center gap-2">
+            บันทึกการแก้ไข
+        </button>
+    </div>
+</main>
+
+<!-- Loading Overlay -->
+<div id="loadingOverlay" class="fixed inset-0 bg-white/80 z-[60] flex items-center justify-center backdrop-blur-sm">
+    <div class="flex flex-col items-center">
+        <span class="material-symbols-outlined text-[#006c40] text-5xl animate-spin mb-3">sync</span>
+        <p class="font-plus font-bold text-[#006c40]">กำลังโหลดข้อมูล...</p>
+    </div>
+</div>
+
+<script>
+    // 🚨🚨 นำ LIFF ID และ GAS URL มาใส่ที่นี่
+    const LIFF_ID = "2010897779-NA8xZzta"; 
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbyeKxJiRsDWXnI8onqW1IqT5LMQMQ6JdLqSAwA2BiI68QC5eq1-xODhdAn64xjbrkXeww/exec"; 
+
+    let userUID = "";
+
+    document.addEventListener("DOMContentLoaded", function() {
+        liff.init({ liffId: LIFF_ID }).then(() => {
+            if (liff.isLoggedIn()) {
+                liff.getProfile().then(profile => {
+                    userUID = profile.userId;
+                    document.getElementById('profileImage').src = profile.pictureUrl || "https://placehold.co/150x150/006c40/FFFFFF?text=User";
+                    document.getElementById('displayName').innerText = profile.displayName;
+                    
+                    // เมื่อโหลด LIFF เสร็จ ให้ดึงตัวเลือกหอพัก/อาชีพ และข้อมูลส่วนตัว
+                    loadData();
+                });
+            } else {
+                liff.login();
+            }
+        });
+    });
+
+    async function loadData() {
+        try {
+            // 1. ดึง Dropdown หอพักและอาชีพมาก่อน
+            const optRes = await fetch(GAS_URL, {
+                method: 'POST',
+                body: JSON.stringify({ action: 'getFormOptions' })
+            });
+            const optData = await optRes.json();
+            
+            let orgSelect = document.getElementById('org');
+            let jobSelect = document.getElementById('job');
+            
+            optData.dorms.forEach(d => { orgSelect.add(new Option(d, d)); });
+            optData.jobs.forEach(j => { jobSelect.add(new Option(j, j)); });
+
+            // 2. ดึงข้อมูลส่วนตัว และคะแนน
+            const profileRes = await fetch(GAS_URL, {
+                method: 'POST',
+                body: JSON.stringify({ action: 'getUserProfile', userId: userUID })
+            });
+            const profileData = await profileRes.json();
+
+            if (profileData.success) {
+                const p = profileData.data;
+                // เติมข้อมูลลงช่อง Input
+                document.getElementById('full_name').value = p.full_name;
+                document.getElementById('phone').value = p.phone;
+                document.getElementById('org').value = p.org;
+                document.getElementById('room_number').value = p.room_number;
+                document.getElementById('job').value = p.job;
+                document.getElementById('birthdate').value = p.birthdate;
+                document.getElementById('disease').value = p.disease;
+
+                // อัปเดตข้อมูลบนการ์ดด้านบน
+                document.getElementById('displayDorm').innerHTML = `<span class="material-symbols-outlined text-[14px] align-middle">apartment</span> หอพัก: ${p.org || '-'}`;
+                document.getElementById('totalKm').innerText = profileData.totalKm;
+                // ใส่คอมม่าใน Point ถ้ายอดถึงหลักพัน
+                document.getElementById('totalPoints').innerText = Number(profileData.points).toLocaleString(); 
+            } else {
+                alert("เกิดข้อผิดพลาดในการโหลดข้อมูล: " + profileData.error);
+            }
+
+        } catch(e) {
+            console.error(e);
+            alert("ไม่สามารถเชื่อมต่อฐานข้อมูลได้");
+        } finally {
+            // ปิดหน้าจอโหลด
+            document.getElementById('loadingOverlay').classList.add('hidden');
+        }
+    }
+
+    function saveProfile() {
+        const btnSave = document.getElementById('btnSave');
+        btnSave.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> กำลังบันทึก...';
+        btnSave.disabled = true;
+
+        const payload = {
+            action: 'updateUserProfile',
+            userId: userUID,
+            full_name: document.getElementById('full_name').value,
+            phone: document.getElementById('phone').value,
+            org: document.getElementById('org').value,
+            room_number: document.getElementById('room_number').value,
+            job: document.getElementById('job').value,
+            birthdate: document.getElementById('birthdate').value,
+            disease: document.getElementById('disease').value
+        };
+
+        fetch(GAS_URL, {
+            method: 'POST',
+            body: JSON.stringify(payload)
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                alert("บันทึกข้อมูลเรียบร้อยแล้ว!");
+                // อัปเดตหอพักบนการ์ดทันที
+                document.getElementById('displayDorm').innerHTML = `<span class="material-symbols-outlined text-[14px] align-middle">apartment</span> หอพัก: ${payload.org || '-'}`;
+            } else {
+                alert("เกิดข้อผิดพลาด: " + data.error);
+            }
+        })
+        .catch(err => {
+            alert("การเชื่อมต่อล้มเหลว กรุณาลองใหม่");
+        })
+        .finally(() => {
+            btnSave.innerHTML = 'บันทึกการแก้ไข';
+            btnSave.disabled = false;
+        });
+    }
+</script>
+
+</body>
+</html>

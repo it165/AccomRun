@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
+    <title>ส่งผลก้าวประจำวัน - Accom RUN 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <!-- 🟢 1. นำเข้า LINE LIFF -->
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <!-- 🟢 2. นำเข้า Tesseract.js (ระบบ OCR อ่านตัวเลข) -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
+    <style>
+        body { font-family: 'Lexend', sans-serif; background-color: #f7f9ff; padding-bottom: env(safe-area-inset-bottom); }
+        .font-plus { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .step-gradient { background: linear-gradient(135deg, #006c40 0%, #198754 100%); }
+        .upload-dashed { background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='20' ry='20' stroke='%23BDCABE' stroke-width='3' stroke-dasharray='12%2c 12' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e"); }
+    </style>
+</head>
+<body class="text-slate-800">
+
+<header class="fixed top-0 w-full z-40 bg-[#006c40] shadow-md flex justify-between items-center px-5 h-16" style="padding-top: env(safe-area-inset-top); height: calc(4rem + env(safe-area-inset-top));">
+    <div class="flex items-center gap-2">
+        <button onclick="window.location.href='index.html'" class="material-symbols-outlined text-white p-2">arrow_back</button>
+        <h1 class="font-plus font-bold text-white text-lg tracking-tight">ส่งผลก้าว</h1>
+    </div>
+</header>
+
+<main class="pt-24 px-5 pb-24 max-w-lg mx-auto">
+    <div class="py-4">
+        <h2 class="font-plus text-2xl text-[#006c40] font-bold">ส่งผลก้าวประจำวัน</h2>
+        <p class="text-sm text-gray-500 mt-1">อัปโหลดรูปภาพ ระบบจะดึงตัวเลขก้าวให้อัตโนมัติ</p>
+    </div>
+
+    <!-- AI/OCR Badge -->
+    <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 flex items-start gap-4 mb-6 shadow-sm">
+        <div class="bg-blue-600 text-white p-2 rounded-lg">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">document_scanner</span>
+        </div>
+        <div class="flex-1">
+            <p class="font-semibold text-blue-800 mb-1">Smart Auto-Fill</p>
+            <p class="text-xs text-blue-600 leading-relaxed">ระบบ OCR จะช่วยสแกนหาตัวเลขจากรูปภาพของคุณ</p>
+        </div>
+    </div>
+
+    <!-- Upload Zone -->
+    <div id="uploadZone" class="upload-dashed h-64 rounded-[20px] flex flex-col items-center justify-center text-center p-6 cursor-pointer hover:bg-gray-50 transition-colors">
+        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-3 shadow-sm border border-gray-100">
+            <span class="material-symbols-outlined text-3xl text-[#006c40]">add_photo_alternate</span>
+        </div>
+        <p class="font-semibold text-[#006c40] mb-1">แตะเพื่อเลือกรูปภาพหลักฐาน</p>
+        <p class="text-xs text-gray-400">ขนาดไฟล์ไม่เกิน 3MB</p>
+        <input accept="image/*" class="hidden" id="fileInput" type="file">
+    </div>
+
+    <!-- Loading ตอนอ่าน OCR -->
+    <div id="loadingOCR" class="hidden flex-col items-center justify-center p-8">
+        <span class="material-symbols-outlined text-[#198754] text-5xl animate-spin mb-4">progress_activity</span>
+        <p class="font-bold text-[#006c40]">ระบบกำลังสแกนหาตัวเลข...</p>
+        <p class="text-xs text-gray-500">ใช้เวลาประมาณ 3-5 วินาที</p>
+    </div>
+
+    <!-- Preview & Input Form (ซ่อนไว้ก่อน จะโชว์เมื่อ OCR อ่านเสร็จ) -->
+    <div id="formContainer" class="hidden flex-col gap-6 mt-4">
+        <div class="relative rounded-2xl overflow-hidden shadow-sm border border-gray-200 h-64 bg-black">
+            <img id="imagePreview" class="w-full h-full object-contain" src="">
+            <button id="removeImage" class="absolute top-3 right-3 bg-red-500/90 backdrop-blur text-white w-10 h-10 rounded-full shadow-lg flex items-center justify-center hover:bg-red-600 transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+
+        <!-- ฟอร์มกรอกตัวเลข -->
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 space-y-4">
+            <div class="flex flex-col">
+                <label class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">จำนวนก้าว (Steps)</label>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">directions_run</span>
+                    <input type="number" id="inputSteps" placeholder="ระบุจำนวนก้าว" class="w-full pl-10 pr-4 py-3.5 rounded-xl border border-gray-300 bg-gray-50 text-xl font-bold text-[#006c40] focus:outline-none focus:border-[#198754] focus:ring-1 focus:ring-[#198754]" onkeyup="recalculateKm()" onchange="recalculateKm()">
+                </div>
+            </div>
+
+            <div class="flex flex-col">
+                <label class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">ระยะทางที่ได้ (กิโลเมตร)</label>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">route</span>
+                    <input type="number" step="0.01" id="inputKm" placeholder="คำนวณให้อัตโนมัติ" class="w-full pl-10 pr-4 py-3.5 rounded-xl border border-gray-300 bg-gray-50 text-lg font-bold text-gray-700 focus:outline-none focus:border-[#198754] focus:ring-1 focus:ring-[#198754]">
+                </div>
+                <p class="text-xs text-gray-400 mt-1">* หากตัวเลขไม่ตรงกับแอป แตะเพื่อพิมพ์แก้ไขได้เลย</p>
+            </div>
+        </div>
+
+        <button id="btnSubmit" onclick="submitSteps()" class="w-full h-14 step-gradient text-white font-plus font-bold text-lg rounded-xl shadow-lg active:scale-95 transition-all flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined">cloud_upload</span>
+            ยืนยันและส่งผลก้าว
+        </button>
+    </div>
+</main>
+
+<script>
+    // 🚨 1. นำ LIFF ID และ GAS URL มาใส่ที่นี่ (ใช้ GAS URL ล่าสุดที่คุณมี)
+    const LIFF_ID = "2010897779-NA8xZzta"; 
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbyeKxJiRsDWXnI8onqW1IqT5LMQMQ6JdLqSAwA2BiI68QC5eq1-xODhdAn64xjbrkXeww/exec"; 
+    
+    let userUID = "";
+    let currentImageDataUrl = "";
+
+    const uploadZone = document.getElementById('uploadZone');
+    const fileInput = document.getElementById('fileInput');
+    const loadingOCR = document.getElementById('loadingOCR');
+    const formContainer = document.getElementById('formContainer');
+    const imagePreview = document.getElementById('imagePreview');
+    const inputSteps = document.getElementById('inputSteps');
+    const inputKm = document.getElementById('inputKm');
+    const btnSubmit = document.getElementById('btnSubmit');
+
+    document.addEventListener("DOMContentLoaded", function() {
+        liff.init({ liffId: LIFF_ID }).then(() => {
+            if (liff.isLoggedIn()) liff.getProfile().then(profile => { userUID = profile.userId; });
+            else liff.login();
+        }).catch(err => console.error("LIFF Error: " + err.message));
+    });
+
+    uploadZone.addEventListener('click', () => fileInput.click());
+
+    fileInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            if(file.size > 3 * 1024 * 1024) {
+                alert("รูปภาพใหญ่เกินไป กรุณาเลือกรูปที่ขนาดต่ำกว่า 3MB ครับ"); return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                currentImageDataUrl = event.target.result;
+                imagePreview.src = currentImageDataUrl;
+                
+                // สลับหน้าจอไปโหมด Loading OCR
+                uploadZone.classList.add('hidden');
+                loadingOCR.classList.remove('hidden');
+                loadingOCR.classList.add('flex');
+                
+                // 🟢 เริ่มสแกนภาพด้วย Tesseract.js (ทำงานบนเครื่องผู้ใช้)
+                scanImageWithOCR(currentImageDataUrl);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // ฟังก์ชัน OCR
+    async function scanImageWithOCR(imageUrl) {
+        try {
+            const result = await Tesseract.recognize(imageUrl, 'eng');
+            const text = result.data.text;
+            
+            // กรองหาเฉพาะตัวเลข (ลบลูกน้ำออก)
+            const cleanText = text.replace(/,/g, '');
+            const numbers = cleanText.match(/\d+/g);
+            let estimatedSteps = "";
+
+            if (numbers) {
+                // สมมติฐาน: จำนวนก้าวมักจะเป็นตัวเลขที่มากที่สุดในหน้าจอ และต้องเกิน 500 ก้าว
+                const validSteps = numbers.map(Number).filter(n => n > 500 && n <= 100000);
+                if (validSteps.length > 0) {
+                    estimatedSteps = Math.max(...validSteps);
+                }
+            }
+
+            // นำตัวเลขที่ได้ไปใส่ในช่อง Input
+            inputSteps.value = estimatedSteps;
+            recalculateKm();
+
+        } catch (error) {
+            console.error("OCR สแกนไม่สำเร็จ:", error);
+            inputSteps.value = "";
+        } finally {
+            // ปิด Loading และโชว์หน้าฟอร์ม (ถึงอ่านไม่เจอก็โชว์ให้คนพิมพ์เองได้)
+            loadingOCR.classList.add('hidden');
+            loadingOCR.classList.remove('flex');
+            formContainer.classList.remove('hidden');
+            formContainer.classList.add('flex');
+        }
+    }
+
+    document.getElementById('removeImage').addEventListener('click', () => {
+        fileInput.value = '';
+        currentImageDataUrl = "";
+        inputSteps.value = "";
+        inputKm.value = "";
+        
+        formContainer.classList.add('hidden');
+        formContainer.classList.remove('flex');
+        uploadZone.classList.remove('hidden');
+    });
+
+    function recalculateKm() {
+        const steps = parseInt(inputSteps.value) || 0;
+        if (steps > 0) {
+            const km = (steps * 0.00076).toFixed(2);
+            inputKm.value = km;
+        } else {
+            inputKm.value = "";
+        }
+    }
+
+    // 🟢 ยืนยันและส่งเข้า Google Sheets
+    function submitSteps() {
+        if (!userUID) { alert("ไม่พบข้อมูลบัญชี LINE กรุณารอสักครู่"); return; }
+        if (!currentImageDataUrl) { alert("กรุณาเลือกรูปภาพหลักฐาน"); return; }
+        
+        const steps = parseInt(inputSteps.value);
+        const km = parseFloat(inputKm.value);
+
+        if (!steps || steps <= 0) { alert("กรุณาระบุจำนวนก้าวให้ถูกต้องครับ"); return; }
+
+        btnSubmit.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> กำลังส่งผลก้าว...';
+        btnSubmit.disabled = true;
+        btnSubmit.classList.add("opacity-70");
+
+        fetch(GAS_URL, {
+            method: 'POST',
+            body: JSON.stringify({
+                action: 'submitSteps',
+                userId: userUID,
+                steps: steps,
+                km: km,
+                image: currentImageDataUrl
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.isDuplicate) {
+                alert("⚠️ " + data.message);
+                resetButton();
+                return;
+            }
+            if (data.success) {
+                btnSubmit.innerHTML = '<span class="material-symbols-outlined">check_circle</span> ส่งผลก้าวสำเร็จ!';
+                btnSubmit.style.background = "#198754";
+                btnSubmit.classList.remove("opacity-70");
+                setTimeout(() => { window.location.href = "index.html"; }, 1500);
+            } else {
+                alert("❌ บันทึกไม่สำเร็จ: " + data.error);
+                resetButton();
+            }
+        })
+        .catch(err => {
+            alert("❌ เชื่อมต่อล้มเหลว กรุณาลองใหม่");
+            resetButton();
+        });
+    }
+
+    function resetButton() {
+        btnSubmit.innerHTML = '<span class="material-symbols-outlined">cloud_upload</span> ยืนยันและส่งผลก้าว';
+        btnSubmit.disabled = false;
+        btnSubmit.classList.remove("opacity-70");
+    }
+</script>
+
+</body>
+</html>

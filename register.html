@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
+    <title>สมัครสมาชิก Accom RUN 2026</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+    <style>
+        body { background-color: #f4f7f6; color: #181c20; font-family: 'Lexend', sans-serif; margin: 0; padding: 0; min-height: 100vh; padding-bottom: env(safe-area-inset-bottom); }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+        .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0px 4px 20px rgba(25, 135, 84, 0.08); }
+        .input-gradient-focus:focus { outline: none; border-color: #198754; box-shadow: 0 0 0 3px rgba(25, 135, 84, 0.15); }
+        .primary-gradient { background: linear-gradient(135deg, #198754 0%, #006c40 100%); }
+        label { font-family: 'Lexend', sans-serif; font-weight: 500; color: #3e4941; margin-bottom: 0.5rem; display: block; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="selection:bg-[#93f7ba] selection:text-[#002110]">
+    
+<header class="fixed top-0 w-full z-50 bg-[#006c40] shadow-md flex justify-between items-center px-5 h-16" style="padding-top: env(safe-area-inset-top); height: calc(4rem + env(safe-area-inset-top));">
+    <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-white" style="font-size: 28px;">fitness_center</span>
+        <h1 class="font-bold text-white tracking-tight" style="font-family: 'Plus Jakarta Sans'; font-size: 20px;">LWS FIT 2026</h1>
+    </div>
+</header>
+
+<main class="pt-28 pb-12 px-5 max-w-lg mx-auto">
+    <div class="mb-8 text-center">
+        <h2 class="text-2xl text-[#006c40] mb-2 font-bold" style="font-family: 'Plus Jakarta Sans';">สมัครสมาชิก</h2>
+        <p class="text-gray-600 text-sm">Accom RUN 2026</p>
+        <div class="mt-4 flex justify-center">
+            <div class="h-1.5 w-16 bg-[#198754] rounded-full"></div>
+        </div>
+    </div>
+
+    <div class="glass-card rounded-2xl p-6 space-y-6">
+        <form id="registerForm" class="space-y-5">
+            <!-- Full Name -->
+            <div class="flex flex-col">
+                <label class="text-xs uppercase tracking-wider" for="full_name">ชื่อ-นามสกุล (Full Name)</label>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">person</span>
+                    <input class="w-full pl-10 pr-4 py-3.5 rounded-xl border border-gray-300 bg-white text-sm input-gradient-focus transition-all" id="full_name" required type="text">
+                </div>
+            </div>
+
+            <!-- Phone Number -->
+            <div class="flex flex-col">
+                <label class="text-xs uppercase tracking-wider" for="phone">เบอร์โทรศัพท์ (Phone Number)</label>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">call</span>
+                    <input class="w-full pl-10 pr-4 py-3.5 rounded-xl border border-gray-300 bg-white text-sm input-gradient-focus transition-all" id="phone" placeholder="08x-xxx-xxxx" required type="tel">
+                </div>
+            </div>
+
+            <!-- หอพัก (ดึงจาก Sheet) -->
+            <div class="flex flex-col">
+                <label class="text-xs uppercase tracking-wider" for="org">หอพัก (Dormitory)</label>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">storefront</span>
+                    <select class="w-full pl-10 pr-10 py-3.5 rounded-xl border border-gray-300 bg-white text-sm input-gradient-focus transition-all appearance-none" id="org" required>
+                        <option disabled selected value="">กำลังโหลดข้อมูล...</option>
+                    </select>
+                    <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">expand_more</span>
+                </div>
+            </div>
+
+            <!-- 🟢 หมายเลขห้อง (แทนจังหวัดเดิม) -->
+            <div class="flex flex-col">
+                <label class="text-xs uppercase tracking-wider" for="room_number">หมายเลขห้อง (Room Number)</label>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">meeting_room</span>
+                    <input class="w-full pl-10 pr-4 py-3.5 rounded-xl border border-gray-300 bg-white text-sm input-gradient-focus transition-all" id="room_number" placeholder="เช่น A101, 502" required type="text">
+                </div>
+            </div>
+
+            <!-- 🟢 อาชีพ (เปลี่ยนเป็นดึงจาก Sheet) -->
+            <div class="flex flex-col">
+                <label class="text-xs uppercase tracking-wider" for="job">อาชีพ (Occupation)</label>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">work</span>
+                    <select class="w-full pl-10 pr-10 py-3.5 rounded-xl border border-gray-300 bg-white text-sm input-gradient-focus transition-all appearance-none" id="job" required>
+                        <option disabled selected value="">กำลังโหลดข้อมูล...</option>
+                    </select>
+                    <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">expand_more</span>
+                </div>
+            </div>
+
+            <!-- Birthdate -->
+            <div class="flex flex-col">
+                <label class="text-xs uppercase tracking-wider" for="birthdate">วันเกิด (Birthdate)</label>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">calendar_month</span>
+                    <input class="w-full pl-10 pr-4 py-3.5 rounded-xl border border-gray-300 bg-white text-sm input-gradient-focus transition-all" id="birthdate" required type="date">
+                </div>
+            </div>
+
+            <!-- Chronic Disease -->
+            <div class="flex flex-col">
+                <label class="text-xs uppercase tracking-wider" for="disease">โรคประจำตัว (Chronic Disease)</label>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">medical_services</span>
+                    <input class="w-full pl-10 pr-4 py-3.5 rounded-xl border border-gray-300 bg-white text-sm input-gradient-focus transition-all" id="disease" placeholder="ระบุโรคประจำตัว (ถ้ามี) หรือปล่อยว่าง" type="text">
+                </div>
+            </div>
+
+            <!-- Privacy Policy -->
+            <div class="flex items-start gap-3 pt-2">
+                <input class="mt-1 w-5 h-5 text-[#006c40] rounded focus:ring-[#006c40]" id="privacy" required type="checkbox">
+                <label class="text-sm text-gray-600 cursor-pointer leading-tight" for="privacy">
+                    ฉันยอมรับ <span class="text-[#006c40] font-semibold underline">เงื่อนไขและนโยบายความเป็นส่วนตัว</span> ของโครงการ Accom RUN 2026
+                </label>
+            </div>
+
+            <!-- Buttons -->
+            <div class="pt-4 flex flex-col gap-4">
+                <button type="submit" id="btnSubmit" class="primary-gradient w-full py-4 rounded-xl text-white font-bold shadow-lg hover:shadow-xl active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined">how_to_reg</span>
+                    ลงทะเบียน (Register)
+                </button>
+                <a href="index.html" class="w-full py-4 rounded-xl border-2 border-[#006c40] text-[#006c40] font-bold text-center hover:bg-green-50 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined">home</span>
+                    กลับสู่หน้าหลัก
+                </a>
+            </div>
+        </form>
+    </div>
+</main>
+
+<script>
+    // 🚨 1. ใส่ข้อมูลของคุณที่นี่
+    const LIFF_ID = "2010897779-NA8xZzta"; 
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbyeKxJiRsDWXnI8onqW1IqT5LMQMQ6JdLqSAwA2BiI68QC5eq1-xODhdAn64xjbrkXeww/exec"; 
+    
+    let userUID = "";
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const inputs = document.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => { input.parentElement.previousElementSibling.classList.add('text-[#006c40]'); });
+            input.addEventListener('blur', () => { input.parentElement.previousElementSibling.classList.remove('text-[#006c40]'); });
+        });
+
+        liff.init({ liffId: LIFF_ID }).then(() => {
+            if (liff.isLoggedIn()) {
+                liff.getProfile().then(profile => { userUID = profile.userId; });
+            } else {
+                liff.login();
+            }
+        }).catch(err => { alert("LIFF Error: " + err.message); });
+
+        // โหลด Dropdown หอพัก และ อาชีพ
+        loadOptions();
+    });
+
+    function loadOptions() {
+        fetch(GAS_URL, {
+            method: 'POST',
+            body: JSON.stringify({ action: 'getFormOptions' })
+        })
+        .then(res => res.json())
+        .then(data => {
+            // โหลดหอพัก
+            const selectOrg = document.getElementById('org');
+            selectOrg.innerHTML = '<option disabled selected value="">เลือกหอพักที่คุณพักอยู่</option>';
+            if(data.dorms) data.dorms.forEach(dorm => { selectOrg.innerHTML += `<option value="${dorm}">${dorm}</option>`; });
+
+            // โหลดอาชีพ
+            const selectJob = document.getElementById('job');
+            selectJob.innerHTML = '<option disabled selected value="">เลือกอาชีพของคุณ</option>';
+            if(data.jobs) data.jobs.forEach(job => { selectJob.innerHTML += `<option value="${job}">${job}</option>`; });
+        })
+        .catch(err => {
+            console.error(err);
+            document.getElementById('org').innerHTML = '<option value="">โหลดข้อมูลล้มเหลว</option>';
+            document.getElementById('job').innerHTML = '<option value="">โหลดข้อมูลล้มเหลว</option>';
+        });
+    }
+
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        if (!userUID) {
+            alert("⚠️ ไม่พบข้อมูลบัญชี LINE กรุณารอสักครู่"); return;
+        }
+
+        const payload = {
+            action: 'register',
+            userId: userUID,
+            full_name: document.getElementById('full_name').value,
+            phone: document.getElementById('phone').value,
+            org: document.getElementById('org').value,
+            room_number: document.getElementById('room_number').value, // 🟢 ส่งหมายเลขห้อง
+            job: document.getElementById('job').value,                 // 🟢 ส่งอาชีพ
+            birthdate: document.getElementById('birthdate').value,
+            disease: document.getElementById('disease').value || 'ไม่มี'
+        };
+
+        if (!payload.full_name || !payload.phone || !payload.org || !payload.room_number || !payload.job || !payload.birthdate) {
+            alert("⚠️ กรุณากรอกข้อมูลให้ครบทุกช่องครับ"); return;
+        }
+        if (!document.getElementById('privacy').checked) {
+            alert("⚠️ กรุณาติ๊กยอมรับเงื่อนไขด้านล่างครับ"); return;
+        }
+
+        const btn = document.getElementById('btnSubmit');
+        const originalHtml = btn.innerHTML;
+        btn.innerHTML = '<span class="material-symbols-outlined animate-spin" style="animation: spin 1s linear infinite;">refresh</span> กำลังส่งข้อมูล...';
+        btn.disabled = true;
+        btn.style.opacity = "0.7";
+
+        fetch(GAS_URL, {
+            method: 'POST',
+            body: JSON.stringify(payload)
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                btn.innerHTML = '<span class="material-symbols-outlined">check_circle</span> ลงทะเบียนสำเร็จ!';
+                btn.style.background = "#198754";
+                btn.style.opacity = "1";
+                setTimeout(() => { window.location.href = "index.html"; }, 1500);
+            } else {
+                alert("❌ เกิดข้อผิดพลาด กรุณาลองใหม่");
+                btn.innerHTML = originalHtml; btn.disabled = false; btn.style.opacity = "1";
+            }
+        })
+        .catch(err => {
+            alert("❌ เชื่อมต่อฐานข้อมูลล้มเหลว: " + err.message);
+            btn.innerHTML = originalHtml; btn.disabled = false; btn.style.opacity = "1";
+        });
+    });
+</script>
+
+</body>
+</html>
