@@ -101,13 +101,13 @@
 </main>
 
 <script>
-    // 🚨 1. นำ LIFF ID และ GAS URL มาใส่ที่นี่ (ใช้ GAS URL ล่าสุดที่คุณมี)
+    // 🚨 1. นำ LIFF ID และ GAS URL มาใส่ที่นี่
     const LIFF_ID = "2010897779-NA8xZzta"; 
     const GAS_URL = "https://script.google.com/macros/s/AKfycbyeKxJiRsDWXnI8onqW1IqT5LMQMQ6JdLqSAwA2BiI68QC5eq1-xODhdAn64xjbrkXeww/exec"; 
     
     let userUID = "";
-    let userLineName = ""; // 🟢 
-    let userLinePic = "";  // 🟢
+    let userLineName = ""; // 🟢 เพิ่มตัวแปรเก็บชื่อ
+    let userLinePic = "";  // 🟢 เพิ่มตัวแปรเก็บรูป
     let currentImageDataUrl = "";
 
     const uploadZone = document.getElementById('uploadZone');
@@ -124,11 +124,12 @@
             if (liff.isLoggedIn()) {
                 liff.getProfile().then(profile => { 
                     userUID = profile.userId; 
-                    userLineName = profile.displayName; // 🟢 เก็บชื่อ LINE
-                    userLinePic = profile.pictureUrl || ""; // 🟢 เก็บรูป LINE
+                    userLineName = profile.displayName;      // 🟢 ดึงชื่อ LINE
+                    userLinePic = profile.pictureUrl || "";  // 🟢 ดึงรูป LINE
                 });
+            } else {
+                liff.login();
             }
-            else liff.login();
         }).catch(err => console.error("LIFF Error: " + err.message));
     });
 
@@ -140,52 +141,40 @@
             if(file.size > 3 * 1024 * 1024) {
                 alert("รูปภาพใหญ่เกินไป กรุณาเลือกรูปที่ขนาดต่ำกว่า 3MB ครับ"); return;
             }
-            
             const reader = new FileReader();
             reader.onload = function(event) {
                 currentImageDataUrl = event.target.result;
                 imagePreview.src = currentImageDataUrl;
                 
-                // สลับหน้าจอไปโหมด Loading OCR
                 uploadZone.classList.add('hidden');
                 loadingOCR.classList.remove('hidden');
                 loadingOCR.classList.add('flex');
                 
-                // 🟢 เริ่มสแกนภาพด้วย Tesseract.js (ทำงานบนเครื่องผู้ใช้)
                 scanImageWithOCR(currentImageDataUrl);
             };
             reader.readAsDataURL(file);
         }
     });
 
-    // ฟังก์ชัน OCR
     async function scanImageWithOCR(imageUrl) {
         try {
             const result = await Tesseract.recognize(imageUrl, 'eng');
-            const text = result.data.text;
-            
-            // กรองหาเฉพาะตัวเลข (ลบลูกน้ำออก)
-            const cleanText = text.replace(/,/g, '');
+            const cleanText = result.data.text.replace(/,/g, '');
             const numbers = cleanText.match(/\d+/g);
             let estimatedSteps = "";
 
             if (numbers) {
-                // สมมติฐาน: จำนวนก้าวมักจะเป็นตัวเลขที่มากที่สุดในหน้าจอ และต้องเกิน 500 ก้าว
                 const validSteps = numbers.map(Number).filter(n => n > 500 && n <= 100000);
-                if (validSteps.length > 0) {
-                    estimatedSteps = Math.max(...validSteps);
-                }
+                if (validSteps.length > 0) estimatedSteps = Math.max(...validSteps);
             }
 
-            // นำตัวเลขที่ได้ไปใส่ในช่อง Input
             inputSteps.value = estimatedSteps;
             recalculateKm();
 
         } catch (error) {
-            console.error("OCR สแกนไม่สำเร็จ:", error);
+            console.error("OCR Error:", error);
             inputSteps.value = "";
         } finally {
-            // ปิด Loading และโชว์หน้าฟอร์ม (ถึงอ่านไม่เจอก็โชว์ให้คนพิมพ์เองได้)
             loadingOCR.classList.add('hidden');
             loadingOCR.classList.remove('flex');
             formContainer.classList.remove('hidden');
@@ -214,7 +203,6 @@
         }
     }
 
-    // 🟢 ยืนยันและส่งเข้า Google Sheets
     function submitSteps() {
         if (!userUID) { alert("ไม่พบข้อมูลบัญชี LINE กรุณารอสักครู่"); return; }
         if (!currentImageDataUrl) { alert("กรุณาเลือกรูปภาพหลักฐาน"); return; }
@@ -228,13 +216,14 @@
         btnSubmit.disabled = true;
         btnSubmit.classList.add("opacity-70");
 
+        // 🟢 ตรวจสอบว่าส่ง lineName และ linePic ไปด้วยแน่นอน
         fetch(GAS_URL, {
             method: 'POST',
             body: JSON.stringify({
                 action: 'submitSteps',
                 userId: userUID,
-                lineName: userLineName, // 🟢 ส่งชื่อไปบันทึก
-                linePic: userLinePic,   // 🟢 ส่งรูปไปบันทึก
+                lineName: userLineName, 
+                linePic: userLinePic,   
                 steps: steps,
                 km: km,
                 image: currentImageDataUrl
@@ -269,6 +258,5 @@
         btnSubmit.classList.remove("opacity-70");
     }
 </script>
-
 </body>
 </html>
