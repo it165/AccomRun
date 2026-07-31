@@ -106,6 +106,8 @@
     const GAS_URL = "https://script.google.com/macros/s/AKfycbyeKxJiRsDWXnI8onqW1IqT5LMQMQ6JdLqSAwA2BiI68QC5eq1-xODhdAn64xjbrkXeww/exec"; 
     
     let userUID = "";
+    let userLineName = ""; // 🟢 
+    let userLinePic = "";  // 🟢
     let currentImageDataUrl = "";
 
     const uploadZone = document.getElementById('uploadZone');
@@ -119,7 +121,13 @@
 
     document.addEventListener("DOMContentLoaded", function() {
         liff.init({ liffId: LIFF_ID }).then(() => {
-            if (liff.isLoggedIn()) liff.getProfile().then(profile => { userUID = profile.userId; });
+            if (liff.isLoggedIn()) {
+                liff.getProfile().then(profile => { 
+                    userUID = profile.userId; 
+                    userLineName = profile.displayName; // 🟢 เก็บชื่อ LINE
+                    userLinePic = profile.pictureUrl || ""; // 🟢 เก็บรูป LINE
+                });
+            }
             else liff.login();
         }).catch(err => console.error("LIFF Error: " + err.message));
     });
@@ -225,6 +233,8 @@
             body: JSON.stringify({
                 action: 'submitSteps',
                 userId: userUID,
+                lineName: userLineName, // 🟢 ส่งชื่อไปบันทึก
+                linePic: userLinePic,   // 🟢 ส่งรูปไปบันทึก
                 steps: steps,
                 km: km,
                 image: currentImageDataUrl
